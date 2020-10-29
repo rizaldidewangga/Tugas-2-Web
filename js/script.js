@@ -92,7 +92,6 @@ function getListStandings() {
                 </tr>
                 `;
                 i++;
-
             });
             contents.innerHTML = `
                 <div class="card">
