@@ -3,7 +3,6 @@ const baseUrl = "https://api.football-data.org/v2/";
 const leagueId = "2021";
 const baseEndPoin = `${baseUrl}competitions/${leagueId}`;
 const teamEndPoin = `${baseUrl}competitions/${leagueId}/teams`;
-const deskripEndPoin = `${baseUrl}teams/{id}`;
 const standingEndPoin = `${baseUrl}competitions/${leagueId}/standings`;
 const matchEndPoin = `${baseUrl}competitions/${leagueId}/matches`;
 
@@ -49,39 +48,24 @@ function getListTeams() {
 
 function showTeamInfo(id){
     title.innerHTML = "Deskripsi Tim";
-    fetch(deskripEndPoin, fetchHeader)
+    let url = baseUrl + "teams/" + id ;
+    fetch(url, fetchHeader)
         .then(response => response.json())
         .then(resJson => {
-            console.log(resJson.teams);
+            console.log(resJson.teams/id);
             let teams = "";
-            resJson.matches.forEach(deskrip => {
+            let i = 1;
+            resJson.teams/id.forEach(team => {
                 teams += `
-                <li class="collection-item avatar">
-                    <img src="${team.crestUrl}" alt="" class="circle">
-                    <span class="title">${team.name}</span>
-                    <p>Berdiri: ${team.founded} <br>
-                       Markas: ${team.venue}
-                    </p>
-                    <a href="#" data-id="${team.id}" class="secondary-content"><i class="material-icons" data-id="${team.id}">info</i></a>
-                </li>
-                `
-            });
-            contents.innerHTML = `
-                <div class="card">
-                    <table class="stripped responsive-table">
-                        <thead>
-                            <th></th>
-                            <th>Peserta</th>
-                            <th>Tanggal</th>
-                            <th>Skor Akhir</th>
-                        </thead>
-                        <tbody>
-                            ${matchs}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }).catch(err => {
+                <tr>
+                    <td style="padding-left:20px;">${i}.</td>
+                    <td>${team.name}</td>
+                    <td>${team.founded}</td>
+                </tr>
+                `;
+            })
+        })
+        .catch(err => {
             console.error(err);
         })
 }
@@ -187,6 +171,9 @@ function loadPage(page) {
             break;
         case "matches":
             getListMatches();
+            break;
+        case "deskrip":
+            showTeamInfo();
             break;
     }
 }
